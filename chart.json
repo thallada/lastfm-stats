@@ -1,0 +1,81 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.0.2.json",
+  "data": {
+    "url": "tags.json"
+  },
+  "transform": [
+    {
+      "window": [
+        {
+          "op": "rank",
+          "as": "rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "play_count",
+          "order": "descending"
+        }
+      ]
+    },
+    {
+      "filter": {
+        "not": {
+          "field": "name",
+          "oneOf": [
+            "seen live",
+            "All",
+            "USA",
+            "american",
+            "electronica",
+            "electro",
+            "british",
+            "UK",
+            "10s",
+            "00s",
+            "beautiful"
+          ]
+        }
+      }
+    },
+    {
+      "filter": "datum.rank <= 40"
+    }
+  ],
+  "description": "Top genre tags played this year",
+  "encoding": {
+    "x": {
+      "field": "play_count",
+      "type": "quantitative",
+      "axis": {
+        "title": "play count",
+        "titleFontSize": 18,
+        "labelFontSize": 14
+      }
+    },
+    "y": {
+      "field": "name",
+      "type": "ordinal",
+      "sort": {
+        "op": "sum",
+        "field": "play_count",
+        "order": "descending"
+      },
+      "axis": {
+        "labelExpr": "lower(datum.value)",
+        "title": "genre",
+        "titleFontSize": 18,
+        "labelFontSize": 14
+      }
+    }
+  },
+  "mark": "bar",
+  "title": {
+    "text": "Top Genre Tags Played in 2020",
+    "fontSize": 24,
+    "offset": 20
+  },
+  "height": {
+    "step": 26
+  }
+}
